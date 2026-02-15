@@ -144,15 +144,27 @@ class MusicService {
     console.log("Cookie path:", cookiePath);    
     
     try {
-      // Spawn yt-dlp process
-      const ytDlpProcess = spawn('C:\\yt-dlp\\yt-dlp.exe', [
+      // Spawn yt-dlp process 
+      
+      // FOR LOCAL
+      // const ytDlpProcess = spawn('C:\\yt-dlp\\yt-dlp.exe', [
+      //   '-f', 'bestaudio',
+      //   '--no-playlist',
+      //   '--cookies', cookiePath,
+      //   '--js-runtimes', `node:${process.execPath}`,
+      //   '-o', '-',
+      //   song.url
+      // ]);
+
+      // FOR RENDER
+      const ytDlpProcess = spawn('yt-dlp', [
         '-f', 'bestaudio',
         '--no-playlist',
         '--cookies', cookiePath,
-        '--js-runtimes', `node:${process.execPath}`,
         '-o', '-',
         song.url
       ]);
+
 
       ytDlpProcess.stderr.on('data', data => {
         console.error('[yt-dlp error]', data.toString());
