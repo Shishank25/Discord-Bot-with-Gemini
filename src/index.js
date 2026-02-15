@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import { config } from './config.js';
+import https from 'https';
 import commandHandler from './handlers/commandHandler.js';
 import { loadEvents } from './handlers/eventHandler.js';
 import reminderService from './services/reminderService.js';
@@ -17,6 +18,11 @@ app.listen(PORT, () => {
   console.log(`Web server running on port ${PORT}`);
 });
 
+https.get('https://discord.com/api/v10/gateway', (res) => {
+  console.log("Gateway HTTP status:", res.statusCode);
+}).on('error', (err) => {
+  console.error("Gateway connection error:", err);
+});
 
 const client = new Client({
   intents: [
@@ -26,6 +32,14 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
+
+client.on("error", console.error);
+client.on("shardError", console.error);
+process.on("unhandledRejection", console.error);
+process.on("uncaughtException", console.error);
+
+console.log("Token exists:", !!config.discord.token);
+console.log("Token length:", config.discord.token?.length);
 
 client.on('clientReady', () => {
   console.log("CLIENT READY EVENT FIRED");
