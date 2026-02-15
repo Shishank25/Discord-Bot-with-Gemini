@@ -27,6 +27,10 @@ const client = new Client({
   ],
 });
 
+client.on('clientReady', () => {
+  console.log("CLIENT READY EVENT FIRED");
+});
+
 // Setup reminder callbacks
 reminderService.onTrigger(async (reminder) => {
   try {
